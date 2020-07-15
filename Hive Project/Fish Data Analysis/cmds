@@ -1,0 +1,24 @@
+show databases;
+create database mydatabase with DBPROPERTIES ('author' = 'bala');
+
+describe database mydatabase;
+
+use mydatabase
+
+create table fish(species string,weight int,length1 float,length2 float,length3 float,Height float,width float)
+row format delimited
+fields terminated by ',';
+
+Load data local inpath 'Fish.csv' into table fish;
+
+select distinct species from fish;
+
+select count(*) from fish;
+
+select species,max(height),max(weight) from fish group by species;
+
+select species,min(height),min(weight) from fish group by species;
+
+ select height,weight,width from fish where width>5 order by width;
+
+describe extended fish; 
