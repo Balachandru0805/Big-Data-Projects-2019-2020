@@ -1,0 +1,25 @@
+
+hadoop dfs -put '/home/edureka/diamonds.csv' '/user/edureka/'
+
+diamond = Load '/user/edureka/diamonds.csv' using PigStorage(',') As (Id:int ,carat:int, cut:chararray, color:chararray, clarity:chararray, depth:int, table:int, price:int, x:int, y:int, z:int);
+
+1.
+filtered_data = Filter diamond by carat>=0.26;
+store filtered_data into '/user/edureka/filtered_data' using PigStorage(',');
+2.
+grunt> describe diamond;
+diamond: {Id: int,carat: int,cut: chararray,color: chararray,clarity: chararray,depth: int,table: int,price: int,x: int,y: int,z: int}
+3.
+cut_quality = Group diamond by cut;
+min_price = Foreach cut_quality Generate group as cut_method,MIN(diamond.price) as price;
+store min_price into '/user/edureka/min_price_detail' using PigStorage(',');
+4.
+carat_res = Foreach cut_quality Generate group,SUM(diamond.carat);
+store carat_res into '/user/edureka/carat_res' using PigStorage(',');
+5.
+good_choice = Filter diamond by cut in ('Good','Premium') and price>=600;
+store good_choice into '/user/edureka/best_option' using PigStorage(',');
+6.
+top_ten = Limit (Order diamond by price desc) 10;
+store top_ten into '/user/edureka/top_ten_price' using PigStorage(',');
+
