@@ -1,0 +1,28 @@
+hadoop dfs -put Customer_Shopping_Data.csv  /user/edureka/
+Cust_Data = load '/user/edureka/Customer_Shopping_Data.csv' using PigStorage(',') as (Cust_Id:int, Gender:chararray, Age:int, City:chararray, Annual_Income:float, Credit_Score:int, Spending_Score:int, City_Id:int);
+dump cust_data;
+1.city_detail = Foreach Cust_Data Generate $7 as city_id,$3 as city;
+dump city_detail;
+Store city_detail into '/user/edureka/city_detail' Using PigStorage(',');
+
+2.income = Filter Cust_Data by Annual_Income>=100000;
+Store income into '/user/edureka/above_10_lakc_income' using PigStorage(',');
+
+3.grouped_city = Group Cust_Data by City_Id;
+Store grouped_city into '/user/edureka/grouped_city' using PigStorage(',');
+
+4.cust_count = Foreach grouped_city Generate group,Count(Cust_Id);
+
+5.order_city = Order Cust_Data by City_Id Asc;
+Store order_city into '/user/edureka/order_city_rec' Using PigStorage(',');
+
+6.describe Cust_Data;
+Output:
+Cust_Data: {Cust_Id: int,Gender: chararray,Age: int,City: chararray,Annual_Income: float,Credit_Score: int,Spending_Score: int,City_Id: int}
+
+7. res = Foreach Cust_Data Generate City_Id;
+disct_res = DISTINCT res
+Store disct_res into '/user/edureka/distict_res' using PigStorage(',');
+
+
+
