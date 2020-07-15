@@ -1,0 +1,24 @@
+hadoop dfs -put '/home/edureka/bank_loan1.csv' '/user/edureka/'
+
+
+bank_loan = Load '/user/edureka/bank_loan1.csv' using PigStorage(',') as (Loan_Id:chararray, Gender:chararray, Married:chararray, Dependents:int, Education:chararray, Self_Employed:chararray, Applicant_Income:int, Coapplicant_Income:int, Loan_Amount:int, Loan_Amount_Term:int, Credit_History:int, Property_Area:chararray, Loan_Status:chararray);
+
+1.bank_data = Limit bank_loan 15;
+dump bank_data;
+Store bank_data into '/user/edureka/ran_detail' using PigStorage(',');
+2.
+married_data = Filter bank_loan by Married=='Yes'; 
+Store married_data into '/user/edureka/married_data' using PigStorage(','');
+3.
+grouped_data = Group bank_loan by Property_Area;
+Store grouped_data into '/user/edureka/grouped_data' using PigStorage(',');
+4. 
+maxi_res = Foreach grouped_data Generate group,MAX(bank_loan.Loan_Amount);
+Store maxi_res into '/user/edureka/max_res' using PigStorage(',');
+5.
+sum_res = Foreach grouped_data Generate group,SUM(bank_loan.Loan_Amount);
+store sum_res into '/user/edureka/sum_res' using PigStorage(',');
+6.
+ordered_data = Order bank_loan by Loan_Amount Desc;
+store ordered_data into '/user/edureka/loan_amt_desc' using PigStorage(',');
+
