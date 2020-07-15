@@ -1,0 +1,4 @@
+ hadoop dfs -put '/home/edureka/tweets.txt'  '/user/edureka/'
+
+hadoop jar '/usr/lib/hadoop-2.2.0/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar' --file mapper.py --mapper mapper.py --file reducer.py --reducer reducer.py --input /user/edureka/tweets.txt --output /user/edureka/tweets_output
+
