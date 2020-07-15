@@ -1,0 +1,5 @@
+hadoop dfs -put '/home/edureka/tweets.txt'  '/user/edureka/'
+
+
+hadoop jar '/usr/lib/hadoop-2.2.0/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar' -file pair_mapper.py -mapper pair_mapper.py -file pair_reducer.py -reducer pair_reducer.py -input /user/edureka/tweets_occur.txt -output /user/edureka/tweet_pair
+
